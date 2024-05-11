@@ -1,0 +1,14 @@
+{
+  "name": "genart-boilerplate",
+  "author": "Gustavo Pitombo - @gpitombo - 2024",
+  "version": "1.0.0",
+  "main": "index.js",
+  "license": "MIT",
+  "scripts": {
+    "start": "node index.js"
+  },
+  "dependencies": {
+    "express": "^4.19.2"
+  },
+  "devDependencies": {}
+}

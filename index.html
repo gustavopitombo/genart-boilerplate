@@ -1,0 +1,66 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>genart-boilerplate</title>
+    <style>
+        body {
+            margin: 0;
+            padding: 0;
+            overflow: hidden;
+            width: 100vw;
+            height: 100vh;
+        }
+
+        #canvas {
+            display: block;
+            margin: 0 auto;
+            width: 100%;
+            height: 100%;
+        }
+    </style>
+    <script src="./utils/hash-token.js"></script>
+    <script src="./utils/url.js"></script>
+    <script src="./utils/random.js"></script>
+    <script>
+        let tokenData = new HashToken(1);
+        tokenData.generate();
+
+        let hashUrl = new HashUrl(tokenData.hash);
+        let R = new Random(hashUrl?.hash);
+
+        const updateUrlEvent = new Event("updateUrl");
+
+        function refreshUrl(updateUrl = false) {
+            if (updateUrl) {
+                tokenData.generate();
+                hashUrl.update(tokenData.hash);
+            } else {
+                tokenData.setHash(hashUrl.hash);
+                hashUrl.refresh();
+            }
+            R = new Random(hashUrl?.hash);
+            window.dispatchEvent(updateUrlEvent);
+        }
+
+        window.addEventListener("popstate", (e) => {
+            refreshUrl();
+        });
+
+        document.addEventListener("keyup", (e) => {
+            if (e.key === "r") {
+                refreshUrl(true);
+                return;
+            }
+        });
+    </script>
+</head>
+
+<body>
+    <canvas id="canvas" width="600" height="600"></canvas>
+    <script src="./src/main.js"></script>
+</body>
+
+</html>
